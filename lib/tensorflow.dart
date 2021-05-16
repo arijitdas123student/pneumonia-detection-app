@@ -61,6 +61,15 @@ class _TensorflowState extends State<Tensorflow> {
     });
     classifyImage(_image);
   }
+    clickImage() async {
+    var image = await ImagePicker().getImage(source: ImageSource.camera);
+    if (image == null) return null;
+    setState(() {
+      _loading = true;
+      _image = File(image.path);
+    });
+    classifyImage(_image);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,6 +120,15 @@ class _TensorflowState extends State<Tensorflow> {
               ),
               backgroundColor: Colors.amber,
             ),
+                       FloatingActionButton(
+            tooltip: 'Click Image',
+            onPressed: clickImage,
+            child: Icon(Icons.camera,
+            size: 20,
+            color: Colors.white,
+
+          ),
+          ),
           ],
         ),
       ),
