@@ -28,7 +28,7 @@ class _TensorflowState extends State<Tensorflow> {
 
   loadModel() async {
     await Tflite.loadModel(
-      model: "assets/model_unquant.tflite",
+      model: "assets/model.tflite",
       labels: "assets/labels.txt",
       numThreads: 1,
     );
