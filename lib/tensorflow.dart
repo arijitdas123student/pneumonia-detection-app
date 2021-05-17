@@ -61,15 +61,6 @@ class _TensorflowState extends State<Tensorflow> {
     });
     classifyImage(_image);
   }
-    clickImage() async {
-    var image = await ImagePicker().getImage(source: ImageSource.camera);
-    if (image == null) return null;
-    setState(() {
-      _loading = true;
-      _image = File(image.path);
-    });
-    classifyImage(_image);
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
