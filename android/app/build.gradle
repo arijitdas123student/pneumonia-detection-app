@@ -1,71 +1,57 @@
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
-}
-
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-}
-
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
-}
-
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
-}
-
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 28
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
-
-    aaptOptions {
-    noCompress 'tflite'
-    noCompress 'lite'
-    }
-    lintOptions {
-        disable 'InvalidPackage'
-    }
-
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.tensorflow"
-        minSdkVersion 19
+        applicationId "org.tensorflow.lite.examples.classification"
+        minSdkVersion 21
         targetSdkVersion 28
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 1
+        versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
+    aaptOptions {
+        noCompress "tflite"
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+    lintOptions {
+        abortOnError false
+    }
+    flavorDimensions "tfliteInference"
+    productFlavors {
+       // The TFLite inference is built using the TFLite Support library.
+       support {
+           dimension "tfliteInference"
+       }
+       // Default: The TFLite inference is built using the TFLite Task library (high-level API).
+       taskApi {
+           getIsDefault().set(true)
+           dimension "tfliteInference"
+       }
+   }
 
-flutter {
-    source '../..'
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    supportImplementation project(":lib_support")
+    taskApiImplementation project(":lib_task_api")
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'com.google.truth:truth:1.0.1'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.1.0'
 }

@@ -1,0 +1,3 @@
+0 Bacterial Pnuemonia
+1 Viral Pneumonia
+2 Normal

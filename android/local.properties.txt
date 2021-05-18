@@ -1,0 +1,1 @@
+sdk.dir=C:\\Users\\ARIJIT DAS\\AppData\\Local\\Android\\sdk
