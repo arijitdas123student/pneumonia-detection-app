@@ -1,8 +1,8 @@
-# TensorFlow Lite Android image classification example
+# Pneumonia Detection Android Application
 
 This document walks through the code of a simple Android mobile application that
 demonstrates
-[image classification](https://www.tensorflow.org/lite/models/image_classification/overview)
+real-time pnuemonia detection on [image classification](https://www.tensorflow.org/lite/models/image_classification/overview)
 using the device camera.
 
 ## Explore the code
